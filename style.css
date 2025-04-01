@@ -341,15 +341,21 @@ body {
     .playListContainer .playlists {        
         grid-template-columns: repeat(2, 1fr);        
     }
-}
-
-@media screen and (max-width: 500px) {
     .leftContainer {
         width: 70%;
     }
+}
 
+@media screen and (max-width: 500px) {
+    .rightContainer .controlContainer .controls {
+        padding: 0 10px;
+    }
     .rightContainer .controlContainer .controls h3 {
         font-size: 1rem;
+    }
+
+    .rightContainer .controlContainer .controls .controlIcons {
+        gap: 10px;
     }
 
     .rightContainer .controlContainer .controls .controlIcons img {
