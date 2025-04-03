@@ -1,12 +1,11 @@
-console.log('Script loaded successfully!');
+// console.log('Script loaded successfully!');
 
 let library = {};
 let currentPlaylist = '';
 let isPlaying = false;
-let currentSong = new Audio();
+let currentSong = null;
 let currentSongIndex = 0;
 let currentSongName = '';
-let started = false;
 
 const toggleMenu = () => {
     const open = document.querySelector('.open');
@@ -90,8 +89,10 @@ const populatePlaylists = async (names) => {
     currentSongIndex = 0;
     currentSongName = Object.keys(library[currentPlaylist])[currentSongIndex];
     currentSong = new Audio(Object.values(library[currentPlaylist])[currentSongIndex]);
-    console.log(library);
-    console.log('Playlists populated successfully.');
+    // console.log(library);
+    // console.log('Playlists populated successfully.');
+    let songDisplay = document.querySelector('.songName h3');
+    songDisplay.innerHTML = currentSongName;
 };
 
 const populateSongs = async (songs) => {
@@ -158,35 +159,96 @@ const secondsToMinutesSeconds = (seconds) => {
     return `${formattedMinutes}:${formattedSeconds}`;
 }
 
+const playSong = async (songsObject, songIndex, songPlaylist) => {
+    currentSong.src = Object.values(songsObject)[songIndex];
+
+    currentSongName = Object.keys(songsObject)[songIndex];
+
+    // console.log(`Current song: ${currentSongName}`, `Current playlist: ${songPlaylist}`);
+
+    let songDisplay = document.querySelector('.songName h3');
+    songDisplay.innerHTML = currentSongName;
+
+    await currentSong.play();
+    isPlaying = true;
+    document.querySelector('.controlIcons img:nth-child(2)').src = 'img/pause.svg';
+    document.querySelectorAll('.songsList ul li')[songIndex].querySelector('img:nth-child(4)').src = 'img/pause.svg';
+
+}
+
+const toggleListPlayPause = async (i) => {
+
+    if(i === currentSongIndex) {
+        if (isPlaying) {
+            await currentSong.pause();
+            isPlaying = false;
+            document.querySelectorAll('.songsList ul li')[currentSongIndex].querySelector('img:nth-child(4)').src = 'img/play.svg';
+            document.querySelector('.controlIcons img:nth-child(2)').src = 'img/play.svg';
+            
+        } else {
+            await currentSong.play();
+            isPlaying = true;
+            document.querySelectorAll('.songsList ul li')[currentSongIndex].querySelector('img:nth-child(4)').src = 'img/pause.svg';
+            document.querySelector('.controlIcons img:nth-child(2)').src = 'img/pause.svg';
+        }
+    } else {
+        document.querySelectorAll('.songsList ul li')[currentSongIndex].querySelector('img:nth-child(4)').src = 'img/play.svg';
+        document.querySelector('.controlIcons img:nth-child(2)').src = 'img/play.svg';
+        let songsObject = library[currentPlaylist];
+        currentSongIndex = i;
+        await playSong(songsObject, i, currentPlaylist);
+    }
+}
+
+const nextSong = async () => {
+    document.querySelectorAll('.songsList ul li')[currentSongIndex].querySelector('img:nth-child(4)').src = 'img/play.svg';
+    let songsObject = library[currentPlaylist];
+    currentSongIndex = (currentSongIndex + 1) % Object.keys(songsObject).length;
+    await playSong(songsObject, currentSongIndex, currentPlaylist);
+}
+
+const prevSong = async () => {
+    document.querySelectorAll('.songsList ul li')[currentSongIndex].querySelector('img:nth-child(4)').src = 'img/play.svg';
+    let songsObject = library[currentPlaylist];
+    currentSongIndex = (currentSongIndex - 1 + Object.keys(songsObject).length) % Object.keys(songsObject).length;
+    await playSong(songsObject, currentSongIndex, currentPlaylist);
+}
 
 const main = async () => {
     const folderNames = await getPlaylists();
     // console.log(folderNames);
     await populatePlaylists(folderNames);
     await populateSongs(Object.keys(library[folderNames[0]]));
-
+    // console.log(`Current song: ${currentSongName}`, `Current playlist: ${currentPlaylist}`);
+    // Play song on click in songsList    
+    let songList = document.querySelectorAll('.songsList ul li');
+    // console.log(songList.length);
+    for(let i = 0; i < songList.length; i++){
+        songList[i].addEventListener('click', async () => {
+            await toggleListPlayPause(i);
+        });
+    }
     //toggling the playlist populates the songs in the list
     let togglePlaylist = document.querySelectorAll('.playlist');
 
     togglePlaylist.forEach(playlist => {
         playlist.addEventListener('click', async () => {
             let playlistName = playlist.textContent;
-            await populateSongs(Object.keys(library[playlistName]));
+            let songsObject = library[playlistName];
+            await populateSongs(Object.keys(songsObject));
 
-            currentPlaylist = playlist;
+            currentPlaylist = playlistName;
             currentSongIndex = 0;
-            if (currentSong) {
-                currentSong.pause();
-                currentSong.currentTime = 0;
+            await playSong(songsObject, currentSongIndex, currentPlaylist);
+
+            // Play song on click in songsList    
+            songList = document.querySelectorAll('.songsList ul li');
+            // console.log(songList.length);
+            for(let i = 0; i < songList.length; i++){
+                songList[i].addEventListener('click', async () => {
+                    await toggleListPlayPause(i);
+                });
             }
-            currentSong = new Audio(Object.values(songsObject)[currentSongIndex]);
-
-            currentSongName = Object.keys(songsObject)[currentSongIndex];
-
-            console.log(`Current song: ${currentSongName}`, `Current playlist: ${currentPlaylist}`);
-
-            let songDisplay = document.querySelector('.songName h3');
-            songDisplay.innerHTML = currentSongName;
         });
     });
 
@@ -194,20 +256,31 @@ const main = async () => {
     let togglePlay = document.querySelector('.controlIcons img:nth-child(2)');
     togglePlay.addEventListener('click', async () => {
         if (!isPlaying) {
-            currentSong.play();
+            await currentSong.play();
             isPlaying = true;
-            started = true;
             togglePlay.src = 'img/pause.svg';
+            document.querySelectorAll('.songsList ul li')[currentSongIndex].querySelector('img:nth-child(4)').src = 'img/pause.svg';
         }
         else if (isPlaying) {
-            currentSong.pause();
+            await currentSong.pause();
             isPlaying = false;
             togglePlay.src = 'img/play.svg';
+            document.querySelectorAll('.songsList ul li')[currentSongIndex].querySelector('img:nth-child(4)').src = 'img/play.svg';
         }
     });
 
+    let toggleNext = document.querySelector('.controlIcons img:nth-child(3)');
+    toggleNext.addEventListener('click', async () => {        
+        await nextSong();
+    });
+
+    let togglePrev = document.querySelector('.controlIcons img:nth-child(1)');
+    togglePrev.addEventListener('click', async () => {        
+        await prevSong();
+    });
+
     // Listen for timeupdate event
-    currentSong.addEventListener("timeupdate", () => {
+    currentSong.addEventListener("timeupdate", async () => {
         document.querySelector(".timeStamp h3").innerHTML = `${secondsToMinutesSeconds(currentSong.currentTime)} / ${secondsToMinutesSeconds(currentSong.duration)}`;
 
         let percent = (currentSong.currentTime / currentSong.duration) * 100;
@@ -215,6 +288,8 @@ const main = async () => {
         if (currentSong.currentTime === currentSong.duration) {
             isPlaying = false;
             togglePlay.src = 'img/play.svg';
+            document.querySelectorAll('.songsList ul li')[currentSongIndex].querySelector('img:nth-child(4)').src = 'img/play.svg';            
+            await nextSong();
         }
     });
 
@@ -224,7 +299,6 @@ const main = async () => {
         document.querySelector(".circle").style.left = percent + "%";
         currentSong.currentTime = ((currentSong.duration) * percent) / 100
     })
-
 
 }
 
