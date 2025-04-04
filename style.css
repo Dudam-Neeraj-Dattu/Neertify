@@ -65,8 +65,8 @@ body {
     background-color: #333;
     border-radius: 10px;
     padding: 10px;
-    max-height: calc(100vh - 200px);
-    min-height: calc(100vh - 200px);
+    max-height: calc(100dvh - 200px);
+    min-height: calc(100dvh - 200px);
 }
 
 .libraryLogo {
@@ -144,7 +144,7 @@ body {
 
 .rightContainer .playListContainer {
     background-color: #333;
-    height: calc(100vh - 200px);    
+    height: calc(100dvh - 200px);    
     margin: 10px;
     border-radius: 10px;
 }
@@ -255,7 +255,7 @@ body {
     }
 
     .rightContainer .playListContainer {
-        height: calc(100vh - 170px);    
+        height: calc(100dvh - 170px);    
     }
 
     .playListContainer .playlists {        
