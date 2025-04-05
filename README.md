@@ -38,6 +38,4 @@ Welcome to **Neertify**, a simple yet elegant music player web application built
 
 ---
 
----
-
 Feel free to explore and enjoy your music with Neertify! 🎶
