@@ -111,10 +111,10 @@ body {
 
 
 .songsList ul li .song .songTitle p {
-    word-break: break-all;
+    word-break: break-word;
 }
 .songsList ul li .song p {
-    word-break: break-all;
+    word-break: break-word;
 }
 
 .songsList ul li .song {
@@ -173,7 +173,7 @@ body {
     gap: 20px;
 }
 .rightContainer .controlContainer .controls .songName h3 {
-    word-break: break-all;
+    word-break: break-word;
 }
 .rightContainer .controlContainer .controls .controlIcons img {
     width: 35px;
@@ -288,8 +288,9 @@ body {
         left: -100%;
         width: 50%;
         z-index: 1;
-        border-radius: 20px;
+        border-radius: 10px;
         padding-right: 10px;
+        padding-bottom: 5px;
         transition: all 0.5s ease-in-out;
     }
     .rightContainer {
