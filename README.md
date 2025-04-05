@@ -15,18 +15,28 @@ Welcome to **Neertify**, a simple yet elegant music player web application built
 ## 📱 UI Previews on Different Screens
 
 ### 🖥️ Desktop
-![Desktop View](img/readmeImg/desktop.png)
+<div align="center">
+  <img src="img/readmeImg/desktop.png" alt="Desktop View">
+</div>
 
 ### 📱 Tablets
-![Tablet View](img/readmeImg/tablet.png)
+<div align="center">
+  <img src="img/readmeImg/tablet.png" alt="Tablet View">
+</div>
 
 ### 📱 Mobile
-![Mobile View 1](img/readmeImg/mobile.png)  
-![Mobile View 2](img/readmeImg/mobile2.png)
+<div align="center">
+  <img src="img/readmeImg/mobile.png" alt="Mobile View 1" style="display: inline-block; margin-right: 10px;">
+  <img src="img/readmeImg/mobile2.png" alt="Mobile View 2" style="display: inline-block;">
+</div>
 
 ### 📱 Small Screen Mobiles
-![Small Screen Mobile View 1](img/readmeImg/smallscreen.png)  
-![Small Screen Mobile View 2](img/readmeImg/smallscreen2.png)
+<div align="center">
+  <img src="img/readmeImg/smallscreen.png" alt="Small Screen Mobile View 1" style="display: inline-block; margin-right: 10px;">
+  <img src="img/readmeImg/smallscreen2.png" alt="Small Screen Mobile View 2" style="display: inline-block;">
+</div>
+
+---
 
 ---
 
