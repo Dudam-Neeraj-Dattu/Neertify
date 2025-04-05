@@ -1,4 +1,4 @@
-# 🎵 Neertify - Your Personal Music Player Web App
+# 🎵 Neertify - My Personal Music Player Web App
 
 Welcome to **Neertify**, a simple yet elegant music player web application built entirely with **HTML**, **CSS**, and **JavaScript** using a vanilla approach.
 
